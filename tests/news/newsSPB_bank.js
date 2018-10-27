@@ -22,18 +22,25 @@ const getNewsObject = async newsEl => {
   await page.goto(url);
 
   const newsBlock = await page.$('div.content.news');
-
   const mainNewsEl = await newsBlock.$('h2');
+  const mainNewsObj = await getNewsObject(mainNewsEl);
 
-  const mainNewsResult = await getNewsObject(mainNewsEl);
+  // TODO check in db
 
-  // const mainNews = await (await newsBlock.$$('h2')).jsonValue();
+  const olderNewsList = await newsBlock.$$('h4');
 
-  // const newsList = await (await newsBlock.$$('h4')).jsonValue();
+  const stopTitile =
+    '24.10.2018 Уведомление о закрытии дополнительного офиса «Охтинский»';
+  for (const el of olderNewsList) {
+    const newsObj = await getNewsObject(el);
+    if (newsObj.title == stopTitile) {
+      console.log('gotch');
+      break;
+    } else {
+      console.log('run away');
+    }
+  }
 
-  // const randomElText = await h4s[1].getProperty('innerText');
-  // const randomTitile = await randomElText.jsonValue();
-  console.log(mainNewsResult);
   debugger;
   await browser.close();
 })();
