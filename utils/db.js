@@ -19,28 +19,28 @@ const {
   db: { url, dbName }
 } = appConfig;
 
-const connectToDb = async () => {
-  // const client = new MongoClient(url);
-  // let db;
-  // await client.connect();
-  // db = client.db(dbName);
-  // const collections = await db.collections();
-  // return collections;
-
-  const mongoClient = new MongoClient(url);
-  let db;
-  mongoClient.connect((err, client) => {
-    if (err) {
-      console.log(err);
+const checkNewsWasParsed = async (
+  userNumber,
+  bankId,
+  { id, title, date, link } = {}
+) => {
+  const client = new MongoClient(url, { useNewUrlParser: true });
+  try {
+    await client.connect();
+    const db = client.db(dbName);
+    const newsCollection = db.collection('news');
+    const news = await newsCollection.find({ _id: id }).toArray();
+    console.log(news);
+    if (news.length) {
+      client.close();
+      return true;
     }
-    db = client.db(dbName);
-    db.listCollections((...props) => console.log(props));
-  });
-};
-
-const checkNewsWasParsed = async (userNumber, bankId, newsObject) => {
-  const collections = await connectToDb();
-  return false;
+    await newsCollection.insertOne({ _id: id, title, date, link });
+    client.close();
+    return false;
+  } catch (error) {
+    console.log(`error: ${error}`);
+  }
 };
 
 module.exports = { checkNewsWasParsed };
