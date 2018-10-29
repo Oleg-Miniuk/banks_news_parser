@@ -35,8 +35,6 @@ const getFirstNewsObj = async (dateEl, newsEl) => {
   console.log('browser launched');
   const page = await browser.newPage();
 
-  Object.assign(global, { browser, page });
-
   await page.goto(url);
 
   const newsBlock = await page.$('div.content.news');
