@@ -1,5 +1,6 @@
 const banksConfig = require('../../../config/banksConfig');
 const dbUtils = require('../../../utils/db');
+const parserUtils = require('../../../utils/parser');
 
 const {
   spbBank: { url, bankId, bankName }
@@ -7,7 +8,8 @@ const {
 
 const getDefaultNewsObj = async (newsEl) => {
   const result = {};
-  result.title = await (await newsEl.getProperty('innerText')).jsonValue();
+  const titleStr = await (await newsEl.getProperty('innerText')).jsonValue();
+  result.title = titleStr.substr(11);
   const linkEl = await newsEl.$('a');
   const dateEl = await newsEl.$('span');
   result.link = await (await linkEl.getProperty('href')).jsonValue();
@@ -43,6 +45,8 @@ const parser = async () => {
     global.log.info(bankName, ' : ', 'first news has been already parsed');
   } else {
     freshNews.push(mainNewsObj);
+    parserUtils.logNews(bankName, mainNewsObj);
+
     const olderNewsList = await newsBlock.$$('h4');
     for (const el of olderNewsList) {
       const newsObj = await getDefaultNewsObj(el);
@@ -51,6 +55,7 @@ const parser = async () => {
         break;
       } else {
         console.log('gotcha!');
+        parserUtils.logNews(bankName, newsObj);
         freshNews.push(newsObj);
       }
     }
