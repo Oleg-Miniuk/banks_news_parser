@@ -2,7 +2,7 @@ const banksConfig = require('../../../config/banksConfig');
 const dbUtils = require('../../../utils/db');
 
 const {
-  spbBank: { url, bankId }
+  spbBank: { url, bankId, bankName }
 } = banksConfig;
 
 const getDefaultNewsObj = async (newsEl) => {
@@ -40,7 +40,7 @@ const parser = async () => {
   const freshNews = [];
 
   if (await dbUtils.checkNewsWasParsed(mainNewsObj)) {
-    console.log('first news already parsed');
+    global.log.info(bankName, ' : ', 'first news has been already parsed');
   } else {
     freshNews.push(mainNewsObj);
     const olderNewsList = await newsBlock.$$('h4');

@@ -7,13 +7,15 @@
     "dev": "cross-env NODE_ENV=development supervisor ./bin/www",
     "debug": "cross-env NODE_ENV=development supervisor --inspect ./bin/www",
     "parser": "cross-env NODE_ENV=development node --inspect ./scripts/parser/parser.js",
-    "mock": "cross-env NODE_ENV=development node ./tests/news_mock/mock.js",
+    "mock": "node ./tests/news_mock/mock.js",
+    "clean-log": "node ./scripts/appScripts/cleanLogs.js",
     "test": "jest",
     "test_coverage": "jest --coverage",
     "clear_jest": "jest --clearCache"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
+    "empty-folder": "^2.0.2",
     "express": "~4.16.4",
     "mongodb": "^3.1.8",
     "morgan": "^1.9.1",
