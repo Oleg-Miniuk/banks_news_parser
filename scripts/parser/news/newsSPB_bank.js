@@ -1,14 +1,14 @@
 const puppeteer = require('puppeteer');
-const banksConfig = require('../../config/banksConfig');
-const db = require('../../utils/db');
+const banksConfig = require('../../../config/banksConfig');
+const db = require('../../../utils/db');
 
 const {
-  spbBank: { url, bankId }
+  spbBank: { url, bankId, dd }
 } = banksConfig;
 
 const newsArray = [];
 
-const getDefaultNewsObj = async newsEl => {
+const getDefaultNewsObj = async (newsEl) => {
   const result = {};
   result.title = await (await newsEl.getProperty('innerText')).jsonValue();
   const linkEl = await newsEl.$('a');
