@@ -21,10 +21,19 @@ const {
       logFilePath: path.join(__dirname, '../../logs', `${new Date().toJSON()}.log`)
     });
 
-    const results = await Promise.all(newsParsers.map(parser => parser(browser, db)));
+    Object.assign(global, {
+      browser,
+      log,
+      db
+    });
+
+    const results = await Promise.all(newsParsers.map(parser => parser()));
+    const notificationList = results.reduce((accum, prevArr) => [...accum, ...prevArr], []);
+
     client.close();
     await browser.close();
     console.log(results);
+    console.log(notificationList);
   } catch (error) {
     console.log(error);
   }

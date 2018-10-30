@@ -1,6 +1,7 @@
-const checkNewsWasParsed = async (db, bankId, { id, title, date, link } = {}) => {
+const checkNewsWasParsed = async (newsObject = {}) => {
   try {
-    const newsCollection = db.collection('news');
+    const { id, title, date, link } = newsObject;
+    const newsCollection = global.db.collection('news');
     const news = await newsCollection.find({ _id: id }).toArray();
     console.log(news);
     if (news.length) {

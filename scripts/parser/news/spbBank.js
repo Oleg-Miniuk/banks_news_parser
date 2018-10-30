@@ -26,8 +26,8 @@ const getFirstNewsObj = async (dateEl, newsEl) => {
   return result;
 };
 
-const parser = async (browser, db) => {
-  const page = await browser.newPage();
+const parser = async () => {
+  const page = await global.browser.newPage();
 
   await page.goto(url);
 
@@ -39,14 +39,14 @@ const parser = async (browser, db) => {
 
   const freshNews = [];
 
-  if (await dbUtils.checkNewsWasParsed(db, bankId, mainNewsObj)) {
+  if (await dbUtils.checkNewsWasParsed(mainNewsObj)) {
     console.log('first news already parsed');
   } else {
     freshNews.push(mainNewsObj);
     const olderNewsList = await newsBlock.$$('h4');
     for (const el of olderNewsList) {
       const newsObj = await getDefaultNewsObj(el);
-      if (await dbUtils.checkNewsWasParsed(db, bankId, newsObj)) {
+      if (await dbUtils.checkNewsWasParsed(newsObj)) {
         console.log('already parsed');
         break;
       } else {
