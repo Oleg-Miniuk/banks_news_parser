@@ -3,17 +3,19 @@ const dbUtils = require('../../../utils/db');
 const parserUtils = require('../../../utils/parser');
 
 const {
-  eskhata: { url, bankId, bankName }
+  eskhata: eskhataInfo,
+  eskhata: { url, bankName }
 } = banksConfig;
 
 const getNewsList = async (page) => {
-  const listNewsElements = await page.evaluate(() => {
+  const listNewsElements = await page.evaluate((eskhataInfo) => {
+    const { url, bankId, bankName } = eskhataInfo;
     const getNewsObject = (node) => {
       const title = node.querySelector('.eb-news-body').textContent.trim();
 
       const link = node
         .querySelector('.eb-news-body')
-        .querySelector('a')
+        .querySelectorAll('a')[1]
         .href.trim();
 
       const day = node.querySelector('.eb-news-day').textContent.trim();
@@ -36,7 +38,7 @@ const getNewsList = async (page) => {
     const nodeArr = Array.from(nodes);
     const news = nodeArr.map(node => getNewsObject(node));
     return news;
-  });
+  }, eskhataInfo);
   console.log(listNewsElements);
 };
 

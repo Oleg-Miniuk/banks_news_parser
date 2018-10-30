@@ -18,7 +18,11 @@ const {
     const db = client.db(dbName);
 
     const log = require('simple-node-logger').createSimpleLogger({
-      logFilePath: path.join(__dirname, '../../logs', `${new Date().toJSON()}.log`)
+      logFilePath: path.join(
+        __dirname,
+        '../../logs',
+        `${new Date().toJSON().replace(/:/, '-')}.log`
+      )
     });
 
     Object.assign(global, {
