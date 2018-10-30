@@ -16,14 +16,9 @@ const {
     const db = client.db(dbName);
 
     const results = await Promise.all(newsParsers.map(parser => parser(browser, db)));
-
-    const updateResult = results.reduce(
-      (accumulator, curentArr) => [...accumulator, ...curentArr],
-      []
-    );
     client.close();
     await browser.close();
-    console.log(updateResult);
+    console.log(results);
   } catch (error) {
     console.log(error);
   }
