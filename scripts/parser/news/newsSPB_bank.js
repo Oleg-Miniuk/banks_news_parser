@@ -3,10 +3,8 @@ const banksConfig = require('../../../config/banksConfig');
 const db = require('../../../utils/db');
 
 const {
-  spbBank: { url, bankId, dd }
+  spbBank: { url, bankId }
 } = banksConfig;
-
-const newsArray = [];
 
 const getDefaultNewsObj = async (newsEl) => {
   const result = {};
@@ -65,7 +63,5 @@ const getFirstNewsObj = async (dateEl, newsEl) => {
       }
     }
   }
-
-  debugger;
   await browser.close();
 })();
