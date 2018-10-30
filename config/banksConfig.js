@@ -8,6 +8,11 @@ const config = {
     url: 'http://localhost:1320/',
     bankId: 'bank821',
     bankName: 'Банк 821 кабинета'
+  },
+  eskhata: {
+    url: 'http://eskhata.com/',
+    bankId: 'eskhata',
+    bankName: 'Банк Эсхата (Таджикистан)'
   }
 };
 
