@@ -1,5 +1,4 @@
 const banksConfig = require('../../../config/banksConfig');
-const dbUtils = require('../../../utils/dbUtils');
 const parserUtils = require('../../../utils/parserUtils');
 
 const {
@@ -11,20 +10,17 @@ const getDefaultNewsObj = async (newsEl) => {
   const titleStr = await (await newsEl.getProperty('innerText')).jsonValue();
   result.title = titleStr.substr(11);
   const linkEl = await newsEl.$('a');
-  const dateEl = await newsEl.$('span');
   result.link = await (await linkEl.getProperty('href')).jsonValue();
-  result.date = await (await dateEl.getProperty('innerText')).jsonValue();
-  result.id = `${bankId}_${result.date}_${result.title}`;
+  result.id = `${bankId}_${bankName}_${result.title}`;
   return result;
 };
 
-const getFirstNewsObj = async (dateEl, newsEl) => {
+const getFirstNewsObj = async (newsEl) => {
   const result = {};
   result.title = await (await newsEl.getProperty('innerText')).jsonValue();
   const linkEl = await newsEl.$('a');
   result.link = await (await linkEl.getProperty('href')).jsonValue();
-  result.date = await (await dateEl.getProperty('innerText')).jsonValue();
-  result.id = `${bankId}_${result.date}_${result.title}`;
+  result.id = `${bankId}_${bankName}_${result.title}`;
   return result;
 };
 
@@ -33,33 +29,16 @@ const parser = async () => {
 
   await page.goto(url);
 
-  const newsBlock = await page.$('div.content.news');
+  const mainNewsEl = await page.$('div.content.news h2');
+  const mainNewsObj = await getFirstNewsObj(mainNewsEl);
 
-  const mainNewsDateEl = await page.$('span.badge.badge-info');
-  const mainNewsEl = await newsBlock.$('h2');
-  const mainNewsObj = await getFirstNewsObj(mainNewsDateEl, mainNewsEl);
+  const olderNewsElements = await page.$$('div.content.news h4');
+  const olderNewsList = await Promise.all(olderNewsElements.map(el => getDefaultNewsObj(el)));
 
-  const freshNews = [];
-
-  if (await dbUtils.checkNewsWasParsed(mainNewsObj)) {
-    global.log.info(bankName, ' : ', 'first news has been already parsed');
-  } else {
-    freshNews.push(mainNewsObj);
-    parserUtils.logNews(bankName, mainNewsObj);
-
-    const olderNewsList = await newsBlock.$$('h4');
-    for (const el of olderNewsList) {
-      const newsObj = await getDefaultNewsObj(el);
-      if (await dbUtils.checkNewsWasParsed(newsObj)) {
-        console.log('already parsed');
-        break;
-      } else {
-        console.log('gotcha!');
-        parserUtils.logNews(bankName, newsObj);
-        freshNews.push(newsObj);
-      }
-    }
-  }
+  const freshNews = await parserUtils.checkNews({
+    newsList: [mainNewsObj, ...olderNewsList],
+    bankName
+  });
 
   await page.close();
 
