@@ -20,8 +20,8 @@ const bot = new TeleBot({
 
 bot.on('text', (msg) => {
   console.log(msg);
-  msg.reply.text(msg.text);
-  bot.sendMessage(msg.from.id, 'Dick');
+  return msg.reply.text(`${msg.text} \n Dick`);
+  // bot.sendMessage(msg.from.id, 'Dick');
 });
 bot.start();
 // _______________________END OF TELEGRAM BOT_________________________
