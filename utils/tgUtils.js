@@ -3,7 +3,11 @@ const axios = require('axios');
 const { token, chatId } = require('../config/telegramConfig');
 
 const sendTgMessage = async msg => axios
-  .get(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${msg}`)
+  .get(
+    `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(
+      msg
+    )}`
+  )
   .then((response) => {
     console.log(response.data);
   })
