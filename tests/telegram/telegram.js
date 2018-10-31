@@ -3,6 +3,7 @@ const axios = require('axios');
 const { token } = require('../../config/telegramConfig');
 
 const chatId = '@dh_test_channel_1';
+const text = 'surprise mazafaka';
 
 // const bot = new TeleBot({
 //   token, // Required. Telegram Bot API token.
@@ -24,7 +25,7 @@ const chatId = '@dh_test_channel_1';
 // bot.start();
 
 axios
-  .get(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=dick`)
+  .get(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${text}`)
   .then((response) => {
     // handle success
     console.log(response.data);
