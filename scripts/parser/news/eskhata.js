@@ -17,6 +17,7 @@ const getNewsList = async page => page.evaluate((eskhataInfo) => {
     return {
       title,
       id,
+      bankName,
       link
     };
   };

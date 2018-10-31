@@ -1,5 +1,6 @@
-const MongoClient = require('mongodb').MongoClient;
+const { MongoClient } = require('mongodb');
 const appConfig = require('../../config/appConfig');
+const dbUtils = require('../../utils/dbUtils');
 
 const {
   db: { url, dbName }
@@ -10,8 +11,8 @@ const {
   try {
     await client.connect();
     const db = client.db(dbName);
-    const newsCollection = db.collection('news');
-    const news = await newsCollection.find({}).toArray();
+    Object.assign(global, { db });
+    const news = await dbUtils.get3LastNews();
     console.log(news);
     client.close();
   } catch (error) {

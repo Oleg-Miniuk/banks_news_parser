@@ -20,6 +20,7 @@ const getFirstNewsObj = async (newsEl) => {
   result.title = await (await newsEl.getProperty('innerText')).jsonValue();
   const linkEl = await newsEl.$('a');
   result.link = await (await linkEl.getProperty('href')).jsonValue();
+  result.bankName = bankName;
   result.id = `${bankId}_${bankName}_${result.title}`;
   return result;
 };

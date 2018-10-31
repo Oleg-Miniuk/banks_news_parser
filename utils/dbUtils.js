@@ -1,12 +1,25 @@
+// sort func
+const dateTime = require('date-time');
+
+const get3LastNews = async () => {
+  const collection = global.db.collection('news');
+  const news = await collection
+    .find({})
+    .limit(3)
+    .sort({ $natural: -1 })
+    .toArray();
+  return news;
+};
+
 const checkNewsWasParsed = async (newsObject = {}) => {
   try {
-    const { id, title, date, link } = newsObject;
+    const { id, title, link, bankName } = newsObject;
     const newsCollection = global.db.collection('news');
     const news = await newsCollection.find({ _id: id }).toArray();
     if (news.length) {
       return true;
     }
-    await newsCollection.insertOne({ _id: id, title, date, link });
+    await newsCollection.insertOne({ _id: id, title, date: dateTime(), link, bankName });
     return false;
   } catch (error) {
     console.log(`error: ${error}`);
@@ -14,4 +27,4 @@ const checkNewsWasParsed = async (newsObject = {}) => {
   return false;
 };
 
-module.exports = { checkNewsWasParsed };
+module.exports = { get3LastNews, checkNewsWasParsed };
