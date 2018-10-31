@@ -39,7 +39,7 @@ const {
 
     client.close();
     await browser.close();
-    // console.log(notificationList);
+    console.log(notificationList.length);
   } catch (error) {
     console.log(error);
   }

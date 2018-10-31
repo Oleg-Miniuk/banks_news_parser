@@ -1,54 +1,43 @@
 const banksConfig = require('../../../config/banksConfig');
-const dbUtils = require('../../../utils/dbUtils');
 const parserUtils = require('../../../utils/parserUtils');
 
-const {
-  eskhata: eskhataInfo,
-  eskhata: { url, bankName }
-} = banksConfig;
+const { eskhata } = banksConfig;
 
-const getNewsList = async (page) => {
-  const listNewsElements = await page.evaluate((eskhataInfo) => {
-    const { url, bankId, bankName } = eskhataInfo;
-    const getNewsObject = (node) => {
-      const title = node.querySelector('.eb-news-body').textContent.trim();
+const getNewsList = async page => page.evaluate((eskhataInfo) => {
+  const { bankId, bankName } = eskhataInfo;
+  const getNewsObject = (node) => {
+    const title = node.querySelector('.eb-news-body').textContent.trim();
 
-      const link = node
-        .querySelector('.eb-news-body')
-        .querySelectorAll('a')[1]
-        .href.trim();
+    const link = node
+      .querySelector('.eb-news-body')
+      .querySelectorAll('a')[1]
+      .href.trim();
 
-      const day = node.querySelector('.eb-news-day').textContent.trim();
-      const month = node.querySelector('.eb-news-month').textContent.trim();
-      const year = node.querySelector('.eb-news-year').textContent.trim();
-      const date = `${day} ${month} ${year}`;
-
-      const id = `${bankId}_${date}_${title}`;
-      return {
-        title,
-        id,
-        date,
-        link
-      };
+    const id = `${bankId}_${bankName}_${title}`;
+    return {
+      title,
+      id,
+      link
     };
-    const nodes = document
-      .querySelector('.news-list.eb-block-wrap')
-      .querySelectorAll('.news-item-wrap');
+  };
+  const nodes = document
+    .querySelector('.news-list.eb-block-wrap')
+    .querySelectorAll('.news-item-wrap');
 
-    const nodeArr = Array.from(nodes);
-    const news = nodeArr.map(node => getNewsObject(node));
-    return news;
-  }, eskhataInfo);
-  console.log(listNewsElements);
-};
+  const news = Array.from(nodes).map(node => getNewsObject(node));
+  return news;
+}, eskhata);
 
 const parser = async () => {
   const page = await global.browser.newPage();
 
-  await page.goto(url);
-  const freshNews = [];
+  await page.goto(eskhata.url);
+  const newsList = await getNewsList(page);
 
-  await getNewsList(page);
+  const freshNews = await parserUtils.checkNews({
+    newsList,
+    bankName: eskhata.bankName
+  });
 
   await page.close();
 
