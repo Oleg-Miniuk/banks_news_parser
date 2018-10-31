@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer'); // const config = require('../../config/banksConfig');
 const { MongoClient } = require('mongodb');
 const path = require('path');
+const dateTime = require('date-time');
 const newsParsers = require('./news/newsParsers');
 const appConfig = require('../../config/appConfig');
 
@@ -21,7 +22,9 @@ const {
       logFilePath: path.join(
         __dirname,
         '../../logs',
-        `${new Date().toJSON().replace(/:/, '-')}.log`
+        `${dateTime()
+          .replace(/\s/g, '_')
+          .replace(/:/, '-')}.log`
       )
     });
 
@@ -36,8 +39,7 @@ const {
 
     client.close();
     await browser.close();
-    console.log(results);
-    console.log(notificationList);
+    // console.log(notificationList);
   } catch (error) {
     console.log(error);
   }

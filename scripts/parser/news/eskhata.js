@@ -1,6 +1,6 @@
 const banksConfig = require('../../../config/banksConfig');
-const dbUtils = require('../../../utils/db');
-const parserUtils = require('../../../utils/parser');
+const dbUtils = require('../../../utils/dbUtils');
+const parserUtils = require('../../../utils/parserUtils');
 
 const {
   eskhata: eskhataInfo,

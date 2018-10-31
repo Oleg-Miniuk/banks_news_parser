@@ -3,7 +3,6 @@ const checkNewsWasParsed = async (newsObject = {}) => {
     const { id, title, date, link } = newsObject;
     const newsCollection = global.db.collection('news');
     const news = await newsCollection.find({ _id: id }).toArray();
-    console.log(news);
     if (news.length) {
       return true;
     }
