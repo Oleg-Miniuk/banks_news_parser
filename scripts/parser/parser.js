@@ -12,7 +12,7 @@ const {
 
 (async () => {
   try {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     console.log('browser launched');
 
     const client = new MongoClient(url, { useNewUrlParser: true });
