@@ -1,5 +1,6 @@
 const dateTime = require('date-time');
 const dbUtils = require('./dbUtils');
+const tgUtils = require('./tgUtils');
 
 const logNews = ({ bankName, newsObj }) => {
   const { title } = newsObj;
@@ -22,7 +23,18 @@ const checkNews = async ({ newsList, bankName }) => {
   return freshNews;
 };
 
+const notifySubscribers = async (newsList) => {
+  for (const newsEl of newsList) {
+    const { title, bankName, link } = newsEl;
+    const msg = `${bankName}:
+    ${title}
+    Подробнее: ${link}`;
+    await tgUtils.sendTgMessage(msg);
+  }
+};
+
 module.exports = {
   logNews,
-  checkNews
+  checkNews,
+  notifySubscribers
 };

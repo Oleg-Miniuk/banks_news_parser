@@ -4,6 +4,7 @@ const path = require('path');
 const dateTime = require('date-time');
 const newsParsers = require('./news/newsParsers');
 const appConfig = require('../../config/appConfig');
+const parserUtils = require('../../utils/parserUtils');
 
 const {
   db: { url, dbName }
@@ -39,7 +40,7 @@ const {
 
     client.close();
     await browser.close();
-    console.log(notificationList.length);
+    parserUtils.notifySubscribers(notificationList);
   } catch (error) {
     console.log(error);
   }
