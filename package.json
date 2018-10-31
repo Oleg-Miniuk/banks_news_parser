@@ -8,6 +8,7 @@
     "debug": "cross-env NODE_ENV=development supervisor --inspect ./bin/www",
     "parser": "cross-env NODE_ENV=development node --inspect ./scripts/parser/parser.js",
     "mock": "node ./tests/news_mock/mock.js",
+    "tg": "node ./tests/telegram/telegram.js",
     "clean-log": "node ./scripts/appScripts/cleanLogs.js",
     "test": "jest",
     "test_coverage": "jest --coverage",
@@ -20,7 +21,8 @@
     "mongodb": "^3.1.8",
     "morgan": "^1.9.1",
     "puppeteer": "^1.9.0",
-    "simple-node-logger": "^0.93.40"
+    "simple-node-logger": "^0.93.40",
+    "telebot": "^1.2.6"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
