@@ -27,14 +27,15 @@ const memoryLog = logger.createSimpleLogger({
 
 const rule = new schedule.RecurrenceRule();
 rule.hour = [new schedule.Range(9 - 19)];
-rule.minute = [new schedule.Range(0, 59)];
+rule.minute = [new schedule.Range(0, 59, 2)];
 
 const j = schedule.scheduleJob(rule, async () => {
   try {
-    memoryLog.isInfo('memory used: ', global.process.memoryUsage().heapUsed);
+    memoryLog.info('memory used: ', global.process.memoryUsage().heapUsed);
 
     const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     console.log('browser launched');
+    console.log(process.env.NODE_ENV === 'production');
 
     const client = new MongoClient(url, { useNewUrlParser: true });
     await client.connect();
