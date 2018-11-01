@@ -29,7 +29,7 @@ const rule = new schedule.RecurrenceRule();
 rule.hour = [new schedule.Range(9 - 19)];
 rule.minute = [new schedule.Range(0, 59, 2)];
 
-(async () => {
+const j = schedule.scheduleJob(rule, async () => {
   memoryLog.info('memory used: ', global.process.memoryUsage().heapUsed);
 
   const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
@@ -73,4 +73,4 @@ rule.minute = [new schedule.Range(0, 59, 2)];
     client.close();
     await browser.close();
   }
-})();
+});
