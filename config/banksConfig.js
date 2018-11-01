@@ -28,6 +28,11 @@ const config = {
     url: 'https://www.sauberbank.com/spb/news/bank/',
     bankId: 'SAUBER_BANK',
     bankName: 'Заубер Банк'
+  },
+  gorBank: {
+    url: 'https://www.gorbank.spb.ru/press/',
+    bankId: 'GOR_BANK',
+    bankName: 'Петербургский Городской Банк'
   }
 };
 

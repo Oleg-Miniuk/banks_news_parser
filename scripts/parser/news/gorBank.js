@@ -2,11 +2,11 @@ const banksConfig = require('../../../config/banksConfig');
 const parserUtils = require('../../../utils/parserUtils');
 
 const {
-  bankRossiya: { url, bankId, bankName }
+  gorBank: { url, bankId, bankName }
 } = banksConfig;
 
 const getNewsObj = async (newsEl) => {
-  const linkEl = await newsEl.$('a');
+  const linkEl = (await newsEl.$$('a'))[0];
   const title = await (await linkEl.getProperty('innerText')).jsonValue();
   const link = await (await linkEl.getProperty('href')).jsonValue();
   const id = `${bankId}_${bankName}_${title}`;
@@ -23,7 +23,7 @@ const parser = async () => {
   await page.goto(url, {
     waitUntil: 'networkidle0'
   });
-  const newsElements = await page.$$('.one-news');
+  const newsElements = await page.$$('.news_block.first');
   const newsList = await Promise.all(newsElements.map(el => getNewsObj(el)));
 
   const freshNews = await parserUtils.checkNews({
@@ -31,7 +31,7 @@ const parser = async () => {
     bankName
   });
   await page.close();
-  console.log(freshNews);
+
   return freshNews;
 };
 
