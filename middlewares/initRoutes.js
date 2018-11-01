@@ -1,7 +1,7 @@
-const test = require('../routes/test/test');
+const clearDbData = require('../routes/clearDbData/clearDbData');
 
-const initRoutes = app => {
-  app.use(`/`, test);
+const initRoutes = (app) => {
+  app.use('/clear_data', clearDbData);
 };
 
 module.exports = initRoutes;

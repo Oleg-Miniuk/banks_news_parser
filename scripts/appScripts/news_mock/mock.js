@@ -19,4 +19,4 @@ require('http')
       })
       .resume();
   })
-  .listen(mockPort, () => console.log(`server is on ${mockPort}'));
+  .listen(mockPort, () => console.log(`server is on ${mockPort}`));
