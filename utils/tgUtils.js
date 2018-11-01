@@ -7,7 +7,7 @@ const sendTgMessage = async msg => axios
   .get(
     `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(
       msg
-    )}`
+    )}&parse_mode= html`
   )
   .then((response) => {
     console.log(response.data);
