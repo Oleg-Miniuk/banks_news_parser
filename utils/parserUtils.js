@@ -35,7 +35,7 @@ const notifySubscribers = async (newsList) => {
     // ${title}
     // Подробнее:
     // ${link}`;
-    const msg = `${bankName}: ${title}` + '\nПодробнее:' + `\n${link}`;
+    const msg = `<b>${bankName}</b>:` + `\n${title}` + '\n\nПодробнее:' + `\n${link}`;
     await tgUtils.sendTgMessage(msg);
   }
 };
