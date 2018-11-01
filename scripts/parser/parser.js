@@ -29,7 +29,7 @@ const rule = new schedule.RecurrenceRule();
 rule.hour = [new schedule.Range(9 - 19)];
 rule.minute = [new schedule.Range(0, 59, 2)];
 
-const j = schedule.scheduleJob(rule, async () => {
+(async () => {
   try {
     memoryLog.info('memory used: ', global.process.memoryUsage().heapUsed);
 
@@ -69,4 +69,4 @@ const j = schedule.scheduleJob(rule, async () => {
   } catch (error) {
     console.log(error);
   }
-});
+})();
