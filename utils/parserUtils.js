@@ -9,18 +9,23 @@ const logNews = ({ bankName, newsObj }) => {
 
 const checkNews = async ({ newsList, bankName }) => {
   const freshNews = [];
-  for (const newsObj of newsList) {
-    if (await dbUtils.checkNewsWasParsed(newsObj)) {
-      break;
-    } else {
-      logNews({ bankName, newsObj });
-      freshNews.push(newsObj);
+  try {
+    for (const newsObj of newsList) {
+      if (await dbUtils.checkNewsWasParsed(newsObj)) {
+        break;
+      } else {
+        logNews({ bankName, newsObj });
+        freshNews.push(newsObj);
+      }
     }
+    if (!freshNews.length) {
+      global.log.info(bankName, ', ', 'date: ', dateTime(), ', ', 'no fresh news');
+    }
+  } catch (error) {
+    console.log('ERROR IN checkNews');
+  } finally {
+    return freshNews;
   }
-  if (!freshNews.length) {
-    global.log.info(bankName, ', ', 'date: ', dateTime(), ', ', 'no fresh news');
-  }
-  return freshNews;
 };
 
 const notifySubscribers = async (newsList) => {

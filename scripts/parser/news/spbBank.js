@@ -33,26 +33,30 @@ const getFirstNewsObj = async (newsEl) => {
 };
 
 const parser = async () => {
-  const page = await global.browser.newPage();
+  let freshNews = [];
+  let page;
+  try {
+    page = await global.browser.newPage();
 
-  await page.goto(url, {
-    waitUntil: 'networkidle0'
-  });
+    await page.goto(url, {
+      waitUntil: 'networkidle0'
+    });
+    const mainNewsEl = await page.$('div.content.news h2');
+    const mainNewsObj = await getFirstNewsObj(mainNewsEl);
 
-  const mainNewsEl = await page.$('div.content.news h2');
-  const mainNewsObj = await getFirstNewsObj(mainNewsEl);
+    const olderNewsElements = await page.$$('div.content.news h4');
+    const olderNewsList = await Promise.all(olderNewsElements.map(el => getDefaultNewsObj(el)));
 
-  const olderNewsElements = await page.$$('div.content.news h4');
-  const olderNewsList = await Promise.all(olderNewsElements.map(el => getDefaultNewsObj(el)));
-
-  const freshNews = await parserUtils.checkNews({
-    newsList: [mainNewsObj, ...olderNewsList],
-    bankName
-  });
-
-  await page.close();
-
-  return freshNews;
+    freshNews = await parserUtils.checkNews({
+      newsList: [mainNewsObj, ...olderNewsList],
+      bankName
+    });
+  } catch (error) {
+    console.error(`ERRRROR IN ${bankName} parser: ${error}`);
+  } finally {
+    await page.close();
+    return freshNews;
+  }
 };
 
 module.exports = parser;

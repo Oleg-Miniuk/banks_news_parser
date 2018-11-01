@@ -30,19 +30,22 @@ const getNewsList = async page => page.evaluate((eskhataInfo) => {
 }, eskhata);
 
 const parser = async () => {
-  const page = await global.browser.newPage();
-
-  await page.goto(eskhata.url);
-  const newsList = await getNewsList(page);
-
-  const freshNews = await parserUtils.checkNews({
-    newsList,
-    bankName: eskhata.bankName
-  });
-
-  await page.close();
-
-  return freshNews;
+  let page;
+  let freshNews = [];
+  try {
+    page = await global.browser.newPage();
+    await page.goto(eskhata.url);
+    const newsList = await getNewsList(page);
+    freshNews = await parserUtils.checkNews({
+      newsList,
+      bankName: eskhata.bankName
+    });
+  } catch (error) {
+    console.error(`ERRRROR IN ${eskhata.bankName} parser: ${error}`);
+  } finally {
+    await page.close();
+    return freshNews;
+  }
 };
 
 module.exports = parser;

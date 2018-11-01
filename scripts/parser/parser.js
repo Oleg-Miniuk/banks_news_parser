@@ -30,17 +30,17 @@ rule.hour = [new schedule.Range(9 - 19)];
 rule.minute = [new schedule.Range(0, 59, 2)];
 
 (async () => {
+  memoryLog.info('memory used: ', global.process.memoryUsage().heapUsed);
+
+  const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+  console.log('browser launched');
+  console.log(process.env.TELEGRAM);
+
+  const client = new MongoClient(url, { useNewUrlParser: true });
+  await client.connect();
+  const db = client.db(dbName);
+
   try {
-    memoryLog.info('memory used: ', global.process.memoryUsage().heapUsed);
-
-    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
-    console.log('browser launched');
-    console.log(process.env.TELEGRAM);
-
-    const client = new MongoClient(url, { useNewUrlParser: true });
-    await client.connect();
-    const db = client.db(dbName);
-
     const log = logger.createSimpleLogger({
       logFilePath: path.join(
         __dirname,
@@ -59,15 +59,18 @@ rule.minute = [new schedule.Range(0, 59, 2)];
 
     const results = await Promise.all(newsParsers.map(parser => parser())).catch(err => console.log(`GOTCHA ${err})`)
     );
-    const notificationList = results.reduce((accum, prevArr) => [...accum, ...prevArr], []);
+    const notificationList = results.length
+      ? results.reduce((accum, prevArr) => [...accum, ...prevArr], [])
+      : null;
 
-    client.close();
-    await browser.close();
-    if (process.env.TELEGRAM) {
+    if (notificationList && notificationList.length && process.env.TELEGRAM) {
       parserUtils.notifySubscribers(notificationList);
     }
     console.log('ended');
   } catch (error) {
-    console.log(error);
+    console.log(`ERROR IN MAIN PARSER: ${error}`);
+  } finally {
+    client.close();
+    await browser.close();
   }
 })();
