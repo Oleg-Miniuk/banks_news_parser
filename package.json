@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=development TELEGRAM=true node ./scripts/parser/parser.js",
-    "dev": "cross-env NODE_ENV=development supervisor ./bin/www",
+    "web": "cross-env NODE_ENV=development node ./bin/www",
     "debug": "cross-env NODE_ENV=development supervisor --inspect ./bin/www",
     "parser": "cross-env NODE_ENV=development node --inspect ./scripts/parser/parser.js",
     "mock": "node ./scripts/appScripts/news_mock/mock.js",
