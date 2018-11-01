@@ -6,6 +6,6 @@ const bankRossiya = require('./bankRossiya');
 const sauberBank = require('./sauberBank');
 const gorBank = require('./gorBank');
 
-const parsers = [gorBank];
+const parsers = [bank821, gorBank, spbBank, eskhata, imon, bankRossiya, sauberBank];
 
 module.exports = parsers;

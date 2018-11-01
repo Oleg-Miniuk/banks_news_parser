@@ -13,7 +13,6 @@ const {
     const db = client.db(dbName);
     Object.assign(global, { db });
     const news = await dbUtils.get3LastNews();
-    console.log(news);
     client.close();
   } catch (error) {
     console.log(`error: ${error}`);

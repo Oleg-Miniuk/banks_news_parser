@@ -41,6 +41,7 @@ const {
     client.close();
     await browser.close();
     // parserUtils.notifySubscribers(notificationList);
+    console.log('ended');
   } catch (error) {
     console.log(error);
   }

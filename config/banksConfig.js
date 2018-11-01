@@ -5,7 +5,7 @@ const config = {
     bankName: 'Банк 821 кабинета'
   },
   spbBank: {
-    url: 'https://www./news/',
+    url: 'https://www.bspb.ru/news/',
     bankId: 'SPB_BANK',
     bankName: 'Банк Санкт-Петербург'
   },

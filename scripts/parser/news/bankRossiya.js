@@ -31,7 +31,6 @@ const parser = async () => {
     bankName
   });
   await page.close();
-  console.log(freshNews);
   return freshNews;
 };
 
