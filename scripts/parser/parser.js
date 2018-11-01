@@ -57,7 +57,7 @@ rule.minute = [new schedule.Range(0, 59, 2)];
       db
     });
 
-    const results = await Promise.all(newsParsers.map(parser => parser()));
+    const results = await Promise.all(newsParsers.map(parser => parser())).catch(err => console.log(`GOTCHA ${err})`);
     const notificationList = results.reduce((accum, prevArr) => [...accum, ...prevArr], []);
 
     client.close();
