@@ -1,0 +1,36 @@
+var session = new Session('fff105c5c6bed8b19c4d9ab32947c95968dfd427');
+
+$(function() {
+  session.init();
+  if (window.ConfirmDialog)
+    new ConfirmDialog('fff105c5c6bed8b19c4d9ab32947c95968dfd427').init();
+
+  $(document).ajaxSend(function(ignored1, ignored2, ajaxRequest) {
+  });
+
+  window.alertOnError = window.alertOnError || function(message, settings) {
+    alert(message, settings);
+  };
+
+  $(document).ajaxError(function(event, req, settings) {
+    if (req.status == 0) return;
+    var message = req.status == 500 ? 'Операция не удалась по техническим причинам. Повторите попытку.' : req.status + ' ' + req.statusText;
+    if (req.responseText && req.responseText.length < 200) message = req.responseText;
+    window.alertOnError(message, settings);
+  });
+
+  $.fn.datepicker.options = {startDate:'27.10.2018', format:'dd.mm.yyyy', weekStart: 1, language: 'ru', autoclose:true};
+
+  if ($.fn.selectpicker) {
+    $.fn.selectpicker.language = 'ru';
+
+    
+      $.fn.selectpicker.defaults = $.extend($.fn.selectpicker.defaults, {
+        noneSelectedText: 'Ничего не выбрано',
+        noneResultsText: 'Не найдено совпадений',
+        countSelectedText: 'Выбрано {0} из {1}',
+        maxOptionsText: ['Достигнут предел ({n} {var} максимум)', 'Достигнут предел в группе ({n} {var} максимум)', ['items', 'item']]
+      });
+    
+  }
+});

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)https://chat-bankspb.nanosemantics.ru/iframe-transport.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- rev. 20170322-1636 -->
+
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/javascript">
+    // debugger;
+    </script>
+    <script type="text/javascript" src="./jquery.min.js.Без названия"></script>
+    <script type="text/javascript">
+        chatJQ = jQuery;
+        // chatJQ.noConflict(true);
+    </script>
+    <script type="text/javascript" src="./underscore-min.js.Без названия"></script>
+
+    <!--[if lte IE 8]>
+    <script src="json2.js"></script>
+    <![endif]--><script type="text/javascript" src="./json2.js.Без названия"></script>
+
+    <script type="text/javascript">var Mibew = Mibew || {};</script>
+    <script type="text/javascript" src="./mibewapi.js.Без названия"></script>
+    <script type="text/javascript" src="./transport_mibew.js.Без названия"></script>
+
+    <script type="text/javascript">
+        (function( $ ){
+        // (function() {
+            var msgID = null;
+
+            // подписываемся на события от транспорта для отправки сообщений в род.окно
+            $(window).on('from-mibew', function(event, data) {
+                // console.log(data);
+                var targetWin = window.parent;
+
+                // манипуляция с подстановкой полного урла для данных оператора
+                var args = data.data;
+                if (args.operatorAvatar && args.operatorAvatar.indexOf(window.location.host) < 0) {
+                    args.operatorAvatar = '//'+ window.location.host + args.operatorAvatar;
+                }
+
+                switch (data.event) {
+                    // кол-во операторов онлайн
+                    case 'nns_livechatStatusRequested':
+                        targetWin.postMessage(JSON.stringify(
+                            $.extend({}, {
+                                message: 'toVishnu::nns_livechatStatusRequested',
+                                params: data.data
+                            })
+                        ), '*');
+                    break;
+                    case 'nns_operatorPersonAssigned':
+                    if (!data.data.operatorAvatar) data.data.operatorAvatar = null;
+                        targetWin.postMessage(JSON.stringify(
+                            $.extend({}, {
+                                message: 'toVishnu::nns_operatorPersonAssigned',
+                                params: data.data
+                            })
+                        ), '*');
+                    break;
+                    // доп событие для данных оператора которые шлется позже
+                    case 'dopOperatorsDate':
+                    if (!data.data.operatorAvatar) data.data.operatorAvatar = null;
+                        targetWin.postMessage(JSON.stringify(
+                            $.extend({}, {
+                                message: 'toVishnu::dopOperatorsDate',
+                                params: data.data
+                            })
+                        ), '*');
+                    break;
+                    case 'nns_operatorTyped':
+                        targetWin.postMessage(JSON.stringify(
+                            $.extend({}, {
+                                message: 'toVishnu::nns_operatorTyped'
+                            })
+                        ), '*');
+                    break;
+                    case 'nns_operatorTextSent':
+                        if (msgID === data.data.messageId) return;
+                        targetWin.postMessage(JSON.stringify(
+                            $.extend({}, {
+                                message: 'toVishnu::nns_operatorTextSent',
+                                params: data.data
+                            })
+                        ), '*');
+                        msgID = data.data.messageId;
+                    break;
+                    case 'nns_switchToVishnu':
+                        targetWin.postMessage(JSON.stringify(
+                            $.extend({}, {
+                                message: 'toVishnu::nns_switchToVishnu',
+                                params: data.data
+                            })
+                        ), '*');
+                    break;
+
+                    // CHANGED: отправляем в виджет данные треда
+                    case 'nlab_threadData':
+                        targetWin.postMessage(JSON.stringify(
+                            $.extend({}, {
+                                message: 'toVishnu::nlab_threadData',
+                                params: data.data
+                            })
+                        ), '*');
+                    break;
+
+                }
+            });
+
+            // подписываемся на получение сообщний от род.окна
+            $(window).on('message', function (ev) {
+                var data      = JSON.parse(ev.originalEvent.data),
+                    targetWin = window.parent;
+
+                // console.log(data);
+                switch (data.message) {
+                    // Проверка доступности операторов
+                    case 'mibew::livechatStatusRequested':
+                        Mibew.checkOperators();
+                    break;
+
+                    // СТАРТ СОЕДИНЕНИЯ С ОПЕРАТОРОМ
+                    case 'mibew::switchToOperatorRequested':
+                        // CHANGED: Исправил определение верного урла для локалки
+                        var _url = (window.location.host === "mibew.local") ?
+                                'http:\/\/'+ window.location.host +'\/mibew\/chat?locale=ru' :
+                                'http:\/\/'+ window.location.host +'\/chat?locale=ru';
+
+                        Mibew.init({
+                            // TODO: возможно вынести параметр (id=...) в код подключения (index.html) и отправлять первым сообщением на инит?
+                            'id': '56bd949a2b38af4c',
+                            'url': _url
+                        });
+                    break;
+
+                    case 'mibew::logToOperatorSent':
+                        Mibew.logSent(data.log);
+                    break;
+
+                    case 'mibew::userTextSent':
+                        Mibew.User.typing = false;
+                        Mibew.MessageForm.postMessage(data.msg);
+                    break;
+
+                    case 'mibew::userTyped':
+                        Mibew.User.typing = true;
+                        if (typingTimeout) return;
+                        var typingTimeout = setTimeout(function(){
+                            Mibew.User.typing = false;
+                        }, 3000);
+                    break;
+
+                    case 'mibew::userEndDialog':
+                        Mibew.closeThread();
+                    break;
+
+                    // CHANGED: добавили функционал оценки диалога
+                    case 'mibew::rate':
+                        if (!data.hasOwnProperty('rate') || data.rate === 0 || !data.rate || typeof data.rate === "undefined" || typeof data.rate !== "number")
+                            throw new Error('Отсутсвтует (или неверное) значение оценки диалога');
+
+                        if (
+                            !data.hasOwnProperty('threadData') ||
+                            !data.threadData.hasOwnProperty('thread_id') ||
+                            !data.threadData.hasOwnProperty('token')
+                        ) throw new Error('Отсутсвтуют данные thread');
+
+                        Mibew.rateThread(data.threadData, data.rate);
+                    break;
+
+                    // case 'mibew::':
+                    //     break;
+                    // case 'mibew::':
+                    //     break;
+                    // case 'mibew::':
+                    //     break;
+                }
+            });
+        // })();
+        })( chatJQ );
+    </script>
+</head>
+
+<body style="">
+    <!-- MIBEW new button code -->
+    <!-- <a id="mibew-agent-button" href="http://chat-bankspb.nanosemantics.ru/chat?locale=ru" target="_blank" onclick="
+        Mibew.init({
+            'id': '56bd949a2b38af4c',
+            'url': 'http:\/\/chat-bankspb.nanosemantics.ru\/chat?locale=ru',
+        });
+        return false;
+    ">
+        <img src="http://chat-bankspb.nanosemantics.ru/b?i=mibew&amp;lang=ru" border="0" width="0" height="0" alt="" />
+    </a> -->
+    <!-- /MIBEW new button code -->
+
+
+</body></html>

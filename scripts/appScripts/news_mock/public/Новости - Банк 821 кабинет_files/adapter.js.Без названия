@@ -1,0 +1,119 @@
+// adapter.js - доп.скрипт для интеграции.
+// Позволяет запускать доп.методы инициализаций LiveChat'a
+// не нарушая логику CSI
+
+(typeof vishnuJQuery !== 'undefined' ? vishnuJQuery : jQuery)(function(){
+    // console.log('ADAPTER: loaded');
+    // var curVishnu = $('.vishnu-container').data('vishnu').vishnu;
+
+    // определение браузера
+    $.browser = {};
+    var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
+    var is_safari = navigator.userAgent.indexOf("Safari") > -1;
+    var is_opera  = navigator.userAgent.toLowerCase().indexOf("op") > -1;
+    if (is_chrome && is_safari) { $.browser.safari = false; }
+    if (is_chrome && is_opera)  { $.browser.chrome = false; }
+    $.browser.opera = is_opera;
+
+    // определение цели ядл сообщения (iframe с транспортом)
+    var $ivishnu = $('iframe#ivishnu');
+    var targetWin = $ivishnu[0].contentWindow;
+
+
+    // перехвачено событие ПРОВЕРИТЬ ОПЕРАТОРОВ
+    vishnuJQuery(window).bind('nns_v3g_switchToOperatorRequested', function(event, data){
+        console.log('-> ADAPTER: '+ event.type);
+
+        targetWin.postMessage(JSON.stringify(
+            $.extend({}, {
+                message: 'mibew::livechatStatusRequested'
+            })
+        ), '*');
+    });
+
+    // перехвачено событие СОЕДИНЕНИЕ С ОПЕРАТОРОМ
+    vishnuJQuery(window).bind('nns_switchToOperatorRequested', function(event, data){
+        console.log('-> ADAPTER: '+ event.type);
+
+        targetWin.postMessage(JSON.stringify(
+            $.extend({}, {
+                message: 'mibew::switchToOperatorRequested'
+            })
+        ), '*');
+    });
+
+    // перехвачено событие ПРОБРОС ЛОГА
+    vishnuJQuery(window).bind('nns_logToOperatorSent', function(event, data){
+        console.log('-> ADAPTER: '+ event.type);
+        var messageLog = [].slice.call(arguments).slice(1);
+        // проверить лог на существование
+        if (messageLog.length === 0 || !messageLog || !messageLog.length) return false;
+
+        // регулярное выражение для удаления html-тегов
+        var reg = /<\/?[^>]+>/g;
+        var subst = '';
+
+        // скомпоновать нужный формат
+        var infHistory = [];
+        $.each(messageLog, function(i, v){
+            var prepareDate;
+            var resultStr;
+
+            // Добавлено удаление тегов .replace(reg, subst);
+            if (v.user) {
+                resultStr = v.user.replace(reg, subst);
+                infHistory.push({'user':resultStr, 'ts':v.ts});
+                // infHistory[prepareDate +' Пос: '] = resultStr;
+            }
+
+            if (v.inf) {
+                resultStr = v.inf.replace(reg, subst);
+                infHistory.push({'inf':resultStr, 'ts':v.ts});
+                // infHistory[prepareDate +' Инф: '] = resultStr;
+            }
+        });
+
+        targetWin.postMessage(JSON.stringify(
+            $.extend({}, {
+                message: 'mibew::logToOperatorSent',
+                log: infHistory
+            })
+        ), '*');
+    });
+
+    // перехвачено событие ЮЗЕР НАБИРАЕТ СООБЩЕНИЕ
+    vishnuJQuery(window).bind('nns_userTyped', function(event, data){
+        console.log('-> ADAPTER: '+ event.type);
+
+        targetWin.postMessage(JSON.stringify(
+            $.extend({}, {
+                message: 'mibew::userTyped'
+            })
+        ), '*');
+    });
+
+    // перехвачено событие ОТПРАВКА СООБЩЕНИЯ от ЮЗЕРА к ОПЕРАТОРУ
+    vishnuJQuery(window).bind('nns_userTextSent', function(event, data){
+        console.log('-> ADAPTER: '+ event.type);
+
+        targetWin.postMessage(JSON.stringify(
+            $.extend({}, {
+                message: 'mibew::userTextSent',
+                msg: data.message
+            })
+        ), '*');
+    });
+
+    // Завершение диалога (таймаут),
+    // так же срабатывает при явном вызове завершения сесси чата
+    vishnuJQuery(window).bind('nns_userEndDialog', function(event, data){
+        console.log('-> ADAPTER: '+ event.type);
+
+        targetWin.postMessage(JSON.stringify(
+            $.extend({}, {
+                message: 'mibew::userEndDialog'
+            })
+        ), '*');
+    });
+
+});
