@@ -1,15 +1,15 @@
-var static = require('node-static');
+const staticModule = require('node-static');
 const path = require('path');
 
-var publicPath = path.join(__dirname, 'public');
-var file = new static.Server(publicPath);
+const publicPath = path.join(__dirname, 'public');
+const file = new staticModule.Server(publicPath);
 
 console.log(publicPath);
 
 require('http')
-  .createServer(function(request, response) {
+  .createServer((request, response) => {
     request
-      .addListener('end', function() {
+      .addListener('end', () => {
         //
         // Serve files!
         //
