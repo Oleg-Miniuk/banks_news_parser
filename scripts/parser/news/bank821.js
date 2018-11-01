@@ -6,22 +6,30 @@ const {
 } = banksConfig;
 
 const getDefaultNewsObj = async (newsEl) => {
-  const result = {};
   const titleStr = await (await newsEl.getProperty('innerText')).jsonValue();
-  result.title = titleStr.substr(11);
+  const title = titleStr.substr(11);
   const linkEl = await newsEl.$('a');
-  result.link = await (await linkEl.getProperty('href')).jsonValue();
-  result.id = `${bankId}_${bankName}_${result.title}`;
-  return result;
+  const link = await (await linkEl.getProperty('href')).jsonValue();
+  const id = `${bankId}_${bankName}_${title}`;
+  return {
+    title,
+    link,
+    id,
+    bankName
+  };
 };
 
 const getFirstNewsObj = async (newsEl) => {
-  const result = {};
-  result.title = await (await newsEl.getProperty('innerText')).jsonValue();
+  const title = await (await newsEl.getProperty('innerText')).jsonValue();
   const linkEl = await newsEl.$('a');
-  result.link = await (await linkEl.getProperty('href')).jsonValue();
-  result.id = `${bankId}_${bankName}_${result.title}`;
-  return result;
+  const link = await (await linkEl.getProperty('href')).jsonValue();
+  const id = `${bankId}_${bankName}_${title}`;
+  return {
+    title,
+    link,
+    id,
+    bankName
+  };
 };
 
 const parser = async () => {
