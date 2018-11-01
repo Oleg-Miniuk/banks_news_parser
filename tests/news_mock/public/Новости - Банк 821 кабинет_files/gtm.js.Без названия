@@ -189,7 +189,7 @@ var data = {
       "vtp_value":"auto"
     },{
       "function":"__c",
-      "vtp_value":"bspb.ru, i.bspb.ru"
+      "vtp_value":", i."
     },{
       "function":"__e"
     },{
@@ -2962,7 +2962,7 @@ var data = {
     },{
       "function":"_cn",
       "arg0":["macro",17],
-      "arg1":"8 \/812\/ 329 5050"
+      "arg1":"8 \/821\/ 821 821"
     },{
       "function":"_eq",
       "arg0":["macro",12],
@@ -3318,7 +3318,7 @@ var data = {
     },{
       "function":"_cn",
       "arg0":["macro",14],
-      "arg1":"https:\/\/www.travel.bspb.ru\/"
+      "arg1":"https:\/\/www.travel.\/"
     },{
       "function":"_cn",
       "arg0":["macro",18],
@@ -3346,7 +3346,7 @@ var data = {
     },{
       "function":"_eq",
       "arg0":["macro",22],
-      "arg1":"https:\/\/i.bspb.ru\/lk\/"
+      "arg1":"https:\/\/i.\/lk\/"
     },{
       "function":"_re",
       "arg0":["macro",11],
@@ -3402,7 +3402,7 @@ var data = {
     },{
       "function":"_cn",
       "arg0":["macro",16],
-      "arg1":"https:\/\/www.bspb.ru\/business\/?logout"
+      "arg1":"https:\/\/www.\/business\/?logout"
     },{
       "function":"_re",
       "arg0":["macro",11],
@@ -3418,7 +3418,7 @@ var data = {
     },{
       "function":"_cn",
       "arg0":["macro",16],
-      "arg1":"bspb.ru\/business\/acquiring\/form\/thanks\/"
+      "arg1":"\/business\/acquiring\/form\/thanks\/"
     },{
       "function":"_cn",
       "arg0":["macro",13],
@@ -3446,7 +3446,7 @@ var data = {
     },{
       "function":"_cn",
       "arg0":["macro",14],
-      "arg1":"https:\/\/www.bspb.ru\/retail\/cards\/form\/?cardApplication"
+      "arg1":"https:\/\/www.\/retail\/cards\/form\/?cardApplication"
     },{
       "function":"_cn",
       "arg0":["macro",18],
@@ -3594,11 +3594,11 @@ var data = {
     },{
       "function":"_cn",
       "arg0":["macro",9],
-      "arg1":"https:\/\/www.bspb.ru\/retail\/car-loan\/"
+      "arg1":"https:\/\/www.\/retail\/car-loan\/"
     },{
       "function":"_cn",
       "arg0":["macro",9],
-      "arg1":"https:\/\/www.bspb.ru\/retail\/cards\/skidki\/"
+      "arg1":"https:\/\/www.\/retail\/cards\/skidki\/"
     },{
       "function":"_cn",
       "arg0":["macro",9],
@@ -3606,7 +3606,7 @@ var data = {
     },{
       "function":"_eq",
       "arg0":["macro",9],
-      "arg1":"https:\/\/www.bspb.ru\/"
+      "arg1":"https:\/\/www.\/"
     },{
       "function":"_cn",
       "arg0":["macro",9],
@@ -3642,7 +3642,7 @@ var data = {
     },{
       "function":"_cn",
       "arg0":["macro",22],
-      "arg1":"https:\/\/www.bspb.ru\/business\/call-form\/"
+      "arg1":"https:\/\/www.\/business\/call-form\/"
     },{
       "function":"_eq",
       "arg0":["macro",21],
@@ -3658,7 +3658,7 @@ var data = {
     },{
       "function":"_cn",
       "arg0":["macro",16],
-      "arg1":"www.bspb.ru\/retail\/deposits\/action\/strateg\/"
+      "arg1":"www.\/retail\/deposits\/action\/strateg\/"
     }],
   "rules":[
     [["if",0],["add",1,0,68,69,93,250,251,269,274,277,278,280,119,121,122,123,124,125,126,127,128,129,130,131,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244]],
