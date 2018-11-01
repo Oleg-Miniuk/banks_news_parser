@@ -35,7 +35,7 @@ rule.minute = [new schedule.Range(0, 59, 2)];
 
     const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     console.log('browser launched');
-    console.log(process.env.NODE_ENV === 'production');
+    console.log(process.env.TELEGRAM);
 
     const client = new MongoClient(url, { useNewUrlParser: true });
     await client.connect();
@@ -62,7 +62,7 @@ rule.minute = [new schedule.Range(0, 59, 2)];
 
     client.close();
     await browser.close();
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.TELEGRAM) {
       parserUtils.notifySubscribers(notificationList);
     }
     console.log('ended');
