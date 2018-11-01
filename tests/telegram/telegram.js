@@ -18,11 +18,9 @@ const bot = new TeleBot({
   allowedUpdates: []
 });
 
-bot.on('text', (msg) => {
-  console.log(msg);
-  return msg.reply.text(`${msg.text} \nDick`);
+bot.on('text', msg => msg.reply.text(`${msg.text} \nDick`)
   // bot.sendMessage(msg.from.id, 'Dick');
-});
+);
 bot.start();
 // _______________________END OF TELEGRAM BOT_________________________
 

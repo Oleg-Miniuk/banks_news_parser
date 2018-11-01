@@ -1,4 +1,5 @@
 const axios = require('axios');
+const dbUtils = require('./dbUtils');
 
 const { token, chatId } = require('../config/telegramConfig');
 
@@ -13,4 +14,17 @@ const sendTgMessage = async msg => axios
   })
   .catch(err => console.log(err));
 
-module.exports = { sendTgMessage };
+const sendLast5News = async () => {
+  const news = await dbUtils.get5LastNews();
+  Promise.all(
+    news.map(async (newsEl) => {
+      const { title, bankName, link } = newsEl;
+      const msg = `${bankName}:
+    ${title}
+    Подробнее: ${link}`;
+      return sendTgMessage(msg);
+    })
+  );
+};
+
+module.exports = { sendTgMessage, sendLast5News };

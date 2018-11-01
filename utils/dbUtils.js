@@ -1,11 +1,11 @@
 // sort func
 const dateTime = require('date-time');
 
-const get3LastNews = async () => {
+const get5LastNews = async () => {
   const collection = global.db.collection('news');
   const news = await collection
     .find({})
-    .limit(3)
+    .limit(5)
     .sort({ $natural: -1 })
     .toArray();
   return news;
@@ -27,4 +27,4 @@ const checkNewsWasParsed = async (newsObject = {}) => {
   return false;
 };
 
-module.exports = { get3LastNews, checkNewsWasParsed };
+module.exports = { get5LastNews, checkNewsWasParsed };
