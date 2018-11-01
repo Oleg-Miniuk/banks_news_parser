@@ -23,6 +23,11 @@ const config = {
     url: 'https://abr.ru/about/news/',
     bankId: 'BANK_ROSSIYA',
     bankName: 'Банк Россия'
+  },
+  sauberBank: {
+    url: 'https://www.sauberbank.com/spb/news/bank/',
+    bankId: 'SAUBER_BANK',
+    bankName: 'Заубер Банк'
   }
 };
 
