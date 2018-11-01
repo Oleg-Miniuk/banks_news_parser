@@ -1,9 +1,8 @@
 const bank821 = require('./bank821');
 const spbBank = require('./spbBank');
 const eskhata = require('./eskhata');
+const imon = require('./imon');
 
-// const parsers = [spbBank];
-const parsers = [eskhata];
-// const parsers = [eskhata, spbBank];
+const parsers = [imon];
 
 module.exports = parsers;

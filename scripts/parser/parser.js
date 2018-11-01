@@ -40,7 +40,7 @@ const {
 
     client.close();
     await browser.close();
-    parserUtils.notifySubscribers(notificationList);
+    // parserUtils.notifySubscribers(notificationList);
   } catch (error) {
     console.log(error);
   }

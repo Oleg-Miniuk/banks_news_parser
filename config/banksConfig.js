@@ -13,6 +13,11 @@ const config = {
     url: 'http://eskhata.com/',
     bankId: 'eskhata',
     bankName: 'Банк Эсхата (Таджикистан)'
+  },
+  imon: {
+    url: 'https://www.imon.tj/ru/#/',
+    bankId: 'imon',
+    bankName: 'Имон Интернешнл (Таджикистан)'
   }
 };
 
