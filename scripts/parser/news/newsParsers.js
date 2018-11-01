@@ -11,7 +11,8 @@ const gorBank = require('./gorBank');
 // const parsers = [eskhata, imon];
 // const parsers = [spbBank];
 
-const parsers = [bank821, gorBank];
+// const parsers = [bank821, gorBank];
+const parsers = [gorBank];
 
 // const parsers = [bankRossiya, sauberBank];
 

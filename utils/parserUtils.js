@@ -31,10 +31,11 @@ const checkNews = async ({ newsList, bankName }) => {
 const notifySubscribers = async (newsList) => {
   for (const newsEl of newsList) {
     const { title, bankName, link } = newsEl;
-    const msg = `${bankName}:
-    ${title}
-    Подробнее:
-    ${link}`;
+    // const msg = `${bankName}:
+    // ${title}
+    // Подробнее:
+    // ${link}`;
+    const msg = `${bankName}: ${title}` + '\nПодробнее:' + `\n${link}`;
     await tgUtils.sendTgMessage(msg);
   }
 };
