@@ -2,7 +2,7 @@ const config = {
   spbBank: {
     url: 'https://www.bspb.ru/news/',
     bankId: 'SPB_BANK',
-    bankName: 'Банк Санкт-Петербург'
+    bankName: 'Банк 821 кабинет'
   },
   bank821: {
     url: 'http://localhost:1320/',
