@@ -35,7 +35,9 @@ const getFirstNewsObj = async (newsEl) => {
 const parser = async () => {
   const page = await global.browser.newPage();
 
-  await page.goto(url);
+  await page.goto(url, {
+    waitUntil: 'networkidle0'
+  });
 
   const mainNewsEl = await page.$('div.content.news h2');
   const mainNewsObj = await getFirstNewsObj(mainNewsEl);
