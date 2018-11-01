@@ -12,8 +12,7 @@ const gorBank = require('./gorBank');
 // const parsers = [spbBank];
 
 // const parsers = [bank821, gorBank];
-const parsers = [gorBank];
 
-// const parsers = [bankRossiya, sauberBank];
+const parsers = [bankRossiya, sauberBank];
 
 module.exports = parsers;
