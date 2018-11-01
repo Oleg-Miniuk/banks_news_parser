@@ -1,6 +1,8 @@
 const staticModule = require('node-static');
 const path = require('path');
 
+const { mockPort } = require('../../../config/appConfig');
+
 const publicPath = path.join(__dirname, 'public');
 const file = new staticModule.Server(publicPath);
 
@@ -17,4 +19,4 @@ require('http')
       })
       .resume();
   })
-  .listen(1320, () => console.log('server is on 1320'));
+  .listen(mockPort, () => console.log(`server is on ${mockPort}'));
