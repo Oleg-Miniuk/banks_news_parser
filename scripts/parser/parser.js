@@ -26,8 +26,7 @@ const memoryLog = logger.createSimpleLogger({
 });
 
 const rule = new schedule.RecurrenceRule();
-// rule.hour = [new schedule.Range(0, 23)];
-rule.minute = 1;
+rule.hour = [new schedule.Range(9, 17, 4)];
 
 const j = schedule.scheduleJob(rule, async () => {
   memoryLog.info('memory used: ', global.process.memoryUsage().heapUsed);
